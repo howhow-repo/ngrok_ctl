@@ -1,19 +1,21 @@
-#! /usr/bin/env python
+import logging
+import os
 import socket
-from dotenv import load_dotenv
 from datetime import datetime
+
+import firebase_admin
+from decouple import config
+from firebase_admin import db
 from getmac import get_mac_address
 from pyngrok import ngrok
-import firebase_admin
-from firebase_admin import db
-import os
 
 
-load_dotenv()
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def main():
-    print("starting ngrok daemon... ", ETH_MAC, LOCAL_IP)
+    logger.info("starting ngrok daemon... "+ETH_MAC+" / "+LOCAL_IP)
     init_data_on_firebase(ETH_MAC)
     ref = db.reference(f"/{ETH_MAC}")
     ref.update({"ip": LOCAL_IP})
@@ -23,11 +25,11 @@ def main():
 def listener(event):
     ref = db.reference(f"/{ETH_MAC}")
     if event.path == "/ngrok" and event.data == "ON":
-        print("starting ngrok...")
+        logger.info("starting ngrok...")
         NgrokController.start()
         ref.update({'ngrok_url': NgrokController.public_url})
     elif event.path == "/ngrok" and event.data != "ON":
-        print("stopping ngrok...")
+        logger.info("stopping ngrok...")
         NgrokController.stop()
         ref.update({'ngrok_url': None})
     else:
@@ -36,14 +38,14 @@ def listener(event):
 
 class NgrokController:
     public_url = None
-    auth_token = os.getenv('NGROK_TOKEN')
+    auth_token = config('NGROK_TOKEN', default=None)
     ssh_tunnel = None
 
     @classmethod
     def start(cls):
         cls.ssh_tunnel = ngrok.connect(22, "tcp")
         cls.public_url = cls.ssh_tunnel.public_url
-        print(cls.ssh_tunnel)  # NgrokTunnel: "tcp://x.tcp.ngrok.io:xxxxx" -> "localhost:22"
+        logger.info(cls.ssh_tunnel)  # NgrokTunnel: "tcp://x.tcp.ngrok.io:xxxxx" -> "localhost:22"
 
     @classmethod
     def stop(cls):
@@ -52,22 +54,13 @@ class NgrokController:
             cls.ssh_tunnel = ngrok.disconnect(public_url)
             ngrok.kill()
             cls.public_url = None
-            print('ngrok stopped')
-
-
-def mac_is_init(mac):
-    ref = db.reference(f"/{mac}")
-    resp = ref.get()
-    if resp is None:
-        return False
-    else:
-        return True
+            logger.info('ngrok stopped')
 
 
 def init_data_on_firebase(mac):
-    ref = db.reference(f"/")
+    ref = db.reference("/")
     ref.update({mac: {
-        'name': os.getenv('DEVICE_NAME'),
+        'name':  config('DEVICE_NAME', default='unnamed'),
         'ngrok': 'OFF',
         'last_reboot': str(datetime.now()),
         'ngrok_url': None,
@@ -82,12 +75,12 @@ def get_ip_address():
     return ip_address
 
 
-def envisset():
-    if not os.getenv('DATABASE_URL'):
-        print("Please setup DATABASE_URL for firebase in .env")
+def envisset() -> bool:
+    if not config('DATABASE_URL', default=None):
+        logger.error("Please setup DATABASE_URL for firebase in .env")
         return False
-    elif not os.getenv('NGROK_TOKEN'):
-        print("Please setup NGROK_TOKEN for ngrok in .env")
+    elif not config('NGROK_TOKEN', default=None):
+        logger.error("Please setup NGROK_TOKEN for ngrok in .env")
         return False
 
     try:
@@ -95,12 +88,12 @@ def envisset():
         firebase_admin.initialize_app(
             firebase_admin.credentials.Certificate(base_dir+'/serviceAccountKey.json'),
             {
-                'databaseURL': os.getenv('DATABASE_URL'),
+                'databaseURL': config('DATABASE_URL', default=None),
             }
         )
     except Exception as e:
-        print("firebase admin initialize failed")
-        print("please check if firebase 'serviceAccountKey.json' is set in root dir")
+        logger.error("firebase admin initialize failed")
+        logger.error("please check if firebase 'serviceAccountKey.json' is set in root dir")
         raise e
     return True
 
