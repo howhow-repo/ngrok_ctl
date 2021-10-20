@@ -5,9 +5,12 @@
 ## Introduction:
 This is a program for turning ngrok on/off manually by using firebase realtime database (rtdb).
 
-By setting a key value in rtdb to "ON" to create a ngrok tunnel session, and "OFF" to turn off, so the service can control it's port 22 expose or not.
+By setting a key **"ngrok"** in rtdb to "ON" to create a ngrok tunnel session, and "OFF" to turn off, so the service can control it's port 22 expose or not.
 
-Free lience of ngrok can only turn on ONE tunnel in a time.
+**Free lience of ngrok can only turn on ONE tunnel in a time.**
+ 
+實現以firebase realtime database (rtdb) 來手動開關遠端port連線。
+可不需設定路由器/防火牆等，即可穿隧。
 
 ---
 
@@ -26,6 +29,8 @@ It use the free service of ngrok, so user do not need to config any network equi
 
 As you may see that ngrok_url appears, user can ssh to the device by providing url.
 
+此程式可以用來埋入複數聯網設備，可以從firebase做集中管理。可以藉由將欲連線設備的"ngrok"手動改為ON，系統將生成一組遠端穿隧用url。使用者可藉由此連線連入該設備，用來達到修改／救援等協助。
+
 ----
 
 ## What you need to prepare:
@@ -36,18 +41,19 @@ As you may see that ngrok_url appears, user can ssh to the device by providing u
 3. firebase rtdb url
    * 登錄firebase，建立專案後，建立realtime database，將會獲得資料庫的url。
    * ![Demo](demo/url_demo.jpg)
-4. .env
-   1. create a file name .env
-   2. add parameters in file:
-   ```
-    DEVICE_NAME = <YorDeviceName> (optional)
-    NGROK_TOKEN = <Your Ngrok token>
-    DATABASE_URL = <Your firebase rtdb url>
-    ```
+   1. .env
+      1. create a file name .env
+      2. add parameters in file:
+      ```
+      DEVICE_NAME = <YorDeviceName> (optional, defualt=unnamed)
+      EXPOSE_PORT = 22 (optional, defualt=22)
+      NGROK_TOKEN = <Your Ngrok token>
+      DATABASE_URL = <Your firebase rtdb url>
+      ```
    
 ----
 
-# How to use:
+## How to use:
 If you have all file satisfy and python requirements install successfully, the service may turn on as long as the main.py is running. (of course the device must be online.)
 
 I'm using this code as a system daemon that will automatically run while raspberry boot up.

@@ -43,7 +43,7 @@ class NgrokController:
 
     @classmethod
     def start(cls):
-        cls.ssh_tunnel = ngrok.connect(22, "tcp")
+        cls.ssh_tunnel = ngrok.connect(int(config('EXPOSE_PORT', default=22)), "tcp")
         cls.public_url = cls.ssh_tunnel.public_url
         logger.info(cls.ssh_tunnel)  # NgrokTunnel: "tcp://x.tcp.ngrok.io:xxxxx" -> "localhost:22"
 
