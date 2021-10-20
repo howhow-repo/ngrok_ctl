@@ -31,13 +31,15 @@ As you may see that ngrok_url appears, user can ssh to the device by providing u
 
 此程式可以用來埋入複數聯網設備，可以從firebase做集中管理。可以藉由將欲連線設備的"ngrok"手動改為ON，系統將生成一組遠端穿隧用url。使用者可藉由此連線連入該設備，用來達到修改／救援等協助。
 
+**Ngrok免費的方案僅支援一次生成一個穿隧url，請確保使用後關閉。(設備重啟後預設為關閉。)**
+
 ----
 
 ## What you need to prepare:
 1. Ngrok token
    * 從官網註冊，取得 [token](https://dashboard.ngrok.com/get-started/your-authtoken )。
-2. Firebase private key file ()
-   * 可參考[教學文](https://firebase.google.com/docs/admin/setup )，下載完後是一個．json，請將檔名改為'serviceAccountKey.json'並置於專案根目錄。
+2. Firebase private key file
+   * 可參考[教學文](https://firebase.google.com/docs/admin/setup )，下載完後是一個json檔。請將檔名改為'serviceAccountKey.json'並置於專案根目錄。
 3. firebase rtdb url
    * 登錄firebase，建立專案後，建立realtime database，將會獲得資料庫的url。
    * ![Demo](demo/url_demo.jpg)
@@ -59,7 +61,7 @@ If you have all file satisfy and python requirements install successfully, the s
 I'm using this code as a system daemon that will automatically run while raspberry boot up.
 
 Here is a reference of how i write my systemd:
-```buildoutcfg
+```
 [Unit]
 Description=Contrling ngrok tunnel by firebase
 Wants=network-online.target
