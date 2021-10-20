@@ -1,0 +1,15 @@
+[Unit]
+Description=Contrling ngrok tunnel by firebase
+Wants=network-online.target
+After=network-online.target
+
+
+[Service]
+Type=simple
+User=pi
+Restart=on-failure
+StartLimitIntervalSec=10
+ExecStart=/usr/bin/python3 /home/pi/Documents/projects/ngrok_test/main.py
+
+[Install]
+WantedBy=multi-user.target
