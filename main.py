@@ -102,9 +102,9 @@ def envisset() -> bool:
 if __name__ == '__main__':
     ETH_MAC = get_mac_address()
     LOCAL_IP = get_ip_address()
-    while True:
-        try:
-            if envisset():
+    if envisset():
+        while True:
+            try:
                 main()
-        except KeyboardInterrupt:
-            time.sleep(5)
+            except KeyboardInterrupt:
+                time.sleep(5)
