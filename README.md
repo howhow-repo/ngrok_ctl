@@ -56,6 +56,8 @@ As you may see that ngrok_url appears, user can ssh to the device by providing u
 ----
 
 ## How to use:
+**FIRST, please auth your device by** ```$ ngrok authtoken <Your Ngrok token>```
+
 If you have all file satisfy and python requirements install successfully, the service may turn on as long as the main.py is running. (of course the device must be online.)
 
 I'm using this code as a system daemon that will automatically run while raspberry boot up.
