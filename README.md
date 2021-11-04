@@ -42,7 +42,7 @@ As you may see that ngrok_url appears, user can ssh to the device by providing u
    * 可參考[教學文](https://firebase.google.com/docs/admin/setup )，下載完後是一個json檔。請將檔名改為'serviceAccountKey.json'並置於專案根目錄。
 3. firebase rtdb url
    * 登錄firebase，建立專案後，建立realtime database，將會獲得資料庫的url。
-   * ![Demo](demo/url_demo.jpg)
+   ![Demo](demo/url_demo.jpg)
    1. .env
       1. create a file name .env
       2. add parameters in file:
@@ -51,6 +51,10 @@ As you may see that ngrok_url appears, user can ssh to the device by providing u
       EXPOSE_PORT = 22 (optional, defualt=22)
       NGROK_TOKEN = <Your Ngrok token>
       DATABASE_URL = <Your firebase rtdb url>
+      ```
+      3. install requirements
+      ```
+      $ pip3 install -r requirements.txt
       ```
    
 ----

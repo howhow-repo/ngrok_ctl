@@ -1,6 +1,7 @@
 import logging
 import os
 import socket
+import time
 from datetime import datetime
 
 import firebase_admin
@@ -101,6 +102,9 @@ def envisset() -> bool:
 if __name__ == '__main__':
     ETH_MAC = get_mac_address()
     LOCAL_IP = get_ip_address()
-
-    if envisset():
-        main()
+    while True:
+        try:
+            if envisset():
+                main()
+        except KeyboardInterrupt:
+            time.sleep(5)
