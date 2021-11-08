@@ -42,24 +42,22 @@ As you may see that ngrok_url appears, user can ssh to the device by providing u
    * 可參考[教學文](https://firebase.google.com/docs/admin/setup )，下載完後是一個json檔。請將檔名改為'serviceAccountKey.json'並置於專案根目錄。
 3. firebase rtdb url
    * 登錄firebase，建立專案後，建立realtime database，將會獲得資料庫的url。
-   ![Demo](demo/url_demo.jpg)
+   * ![Demo](demo/url_demo.jpg)
    1. .env
       1. create a file name .env
       2. add parameters in file:
       ```
       DEVICE_NAME = <YorDeviceName> (optional, defualt=unnamed)
-      EXPOSE_PORT = 22 (optional, defualt=22)
+      EXPOSE_PORT = [xxxx, xxx] (optional, defualt=[22]) (free account can only support 4 ports at once)
       NGROK_TOKEN = <Your Ngrok token>
       DATABASE_URL = <Your firebase rtdb url>
-      ```
-      3. install requirements
-      ```
-      $ pip3 install -r requirements.txt
       ```
    
 ----
 
 ## How to use:
+**FIRST, please auth your device by** ```$ ngrok authtoken <Your Ngrok token>```
+
 If you have all file satisfy and python requirements install successfully, the service may turn on as long as the main.py is running. (of course the device must be online.)
 
 I'm using this code as a system daemon that will automatically run while raspberry boot up.
@@ -77,6 +75,7 @@ Type=simple
 User=pi
 Restart=on-failure
 StartLimitIntervalSec=10
+RestartSec=30s
 ExecStart=/usr/bin/python3 /home/pi/Documents/projects/ngrok_test/main.py
 
 [Install]
