@@ -87,6 +87,7 @@ def envisset() -> bool:
     elif not config('NGROK_TOKEN', default=None):
         logger.error("Please setup NGROK_TOKEN for ngrok in .env")
         return False
+    os.system(f'ngrok authtoken {config("NGROK_TOKEN", default=None)}')
 
     try:
         base_dir = os.path.dirname(os.path.realpath(__file__))
