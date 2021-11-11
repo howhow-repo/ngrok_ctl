@@ -13,7 +13,7 @@ class CamController:
     @classmethod
     def start(cls):
         if cls.process is None:
-            cls.process = subprocess.Popen(['sudo', 'motion'])
+            cls.process = subprocess.Popen(args=['sudo', 'motion'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
             logger.info("cam service started")
         else:
             logger.info(f"cam has started at pid {cls.process.pid}, do nothing.")
@@ -21,7 +21,7 @@ class CamController:
     @classmethod
     def stop(cls):
         if cls.process is not None:
-            os.killpg(os.getpgid(cls.process.pid), signal.SIGTERM)
+            os.system(f"sudo pkill -9 -P {cls.process.pid}")
             logger.info("cam service stopped")
             cls.process = None
         else:
