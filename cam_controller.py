@@ -1,5 +1,7 @@
 import logging
 import subprocess
+import signal
+import os
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -19,7 +21,7 @@ class CamController:
     @classmethod
     def stop(cls):
         if cls.process is not None:
-            cls.process.kill()
+            os.killpg(os.getpgid(cls.process.pid), signal.SIGTERM)
             logger.info("cam service stopped")
             cls.process = None
         else:
