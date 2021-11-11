@@ -9,6 +9,7 @@ from firebase_admin import db
 from getmac import get_mac_address
 from pyngrok import conf
 
+from cam_controller import CamController
 from ngrok_controller import NgrokController
 
 logging.basicConfig(level=logging.INFO)
@@ -29,10 +30,12 @@ def listener(event):
     if event.path == "/ngrok" and event.data == "ON":
         logger.info("starting ngrok...")
         NgrokController.start()
+        CamController.start()
         ref.update({'ngrok_url': NgrokController.public_urls})
     elif event.path == "/ngrok" and event.data != "ON":
         logger.info("stopping ngrok...")
         NgrokController.stop()
+        CamController.stop()
         ref.update({'ngrok_url': None})
     else:
         pass
