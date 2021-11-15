@@ -23,9 +23,10 @@ def main():
     init_data_on_firebase(ETH_MAC)
     ref = db.reference(f"/{ETH_MAC}")
     ref.update({"ip": LOCAL_IP})
-    # Heartbeat_looping = threading.Thread(target=Heartbeat.start(ETH_MAC))
-    # Heartbeat_looping.start()
     ref.listen(listener)
+    Heartbeat_looping = threading.Thread(target=Heartbeat.start(ETH_MAC))
+    Heartbeat_looping.start()
+    print("heartbeat start")
 
 
 def listener(event):

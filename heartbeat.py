@@ -2,6 +2,7 @@ import logging
 from datetime import datetime
 from firebase_admin import db
 import time
+from getmac import get_mac_address
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -9,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class Heartbeat:
     state = "STOP"
-
+    
     @classmethod
     def update(cls, ETH_MAC):
         now = str(datetime.now())
@@ -22,7 +23,7 @@ class Heartbeat:
     def start(cls, ETH_MAC):
         logger.info("start heartbeat")
         cls.state = "START"
-        beat_interval = 60*30
+        beat_interval = 5
         count_down = beat_interval
         while True:
             if cls.state == "START":
