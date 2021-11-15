@@ -2,6 +2,7 @@ import logging
 import os
 import socket
 from datetime import datetime
+import threading
 
 import firebase_admin
 from decouple import config
@@ -10,6 +11,7 @@ from getmac import get_mac_address
 from pyngrok import conf
 
 from cam_controller import CamController
+from heartbeat import Heartbeat
 from ngrok_controller import NgrokController
 
 logging.basicConfig(level=logging.INFO)
@@ -23,6 +25,9 @@ def main():
     ref = db.reference(f"/{ETH_MAC}")
     ref.update({"ip": LOCAL_IP})
     ref.listen(listener)
+    Heartbeat_looping = threading.Thread(target=Heartbeat.start(ETH_MAC))
+    Heartbeat_looping.start()
+    print("heartbeat start")
 
 
 def listener(event):
@@ -47,6 +52,7 @@ def init_data_on_firebase(mac):
         'name':  config('DEVICE_NAME', default='unnamed'),
         'ngrok': 'OFF',
         'last_reboot': str(datetime.now()),
+        'last_heartbeat': str(datetime.now()),
         'ngrok_url': None,
         'expose_ports': NgrokController.expose_ports
     }})
