@@ -23,7 +23,7 @@ class Heartbeat:
     def start(cls, ETH_MAC):
         logger.info("start heartbeat")
         cls.state = "START"
-        beat_interval = 5
+        beat_interval = 600
         count_down = beat_interval
         while True:
             if cls.state == "START":
