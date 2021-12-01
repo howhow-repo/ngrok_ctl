@@ -2,6 +2,7 @@ import logging
 from datetime import datetime
 from firebase_admin import db
 import time
+from decouple import config
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -22,8 +23,8 @@ class Heartbeat:
     def start(ETH_MAC):
         logger.info("start heartbeat")
         Heartbeat.state = "START"
-        beat_interval = 600
-        count_down = beat_interval
+        interval = int(config("HEARTBEAT_INTERVAL", default=600))
+        count_down = interval
         while True:
             if Heartbeat.state == "START":
                 if count_down > 0:
@@ -31,7 +32,7 @@ class Heartbeat:
                     time.sleep(1)
                 else:
                     Heartbeat.update(ETH_MAC)
-                    count_down = beat_interval
+                    count_down = interval
             else:
                 logger.info("HeartBeat state is not 'START', break loop")
                 break
