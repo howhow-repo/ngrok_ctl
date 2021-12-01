@@ -34,9 +34,15 @@ def listener(event):
     ref = db.reference(f"/{ETH_MAC}")
     if event.path == "/ngrok" and event.data == "ON":
         logger.info("starting ngrok...")
-        NgrokController.start()
-        CamController.start()
-        ref.update({'ngrok_url': NgrokController.public_urls})
+        try:
+            NgrokController.start()
+            CamController.start()
+            ref.update({'ngrok_url': NgrokController.public_urls})
+            ref.update({'err': None})
+        except:
+            ref.update({'err': "something went wrong"})
+            NgrokController.stop()
+            CamController.stop()
     elif event.path == "/ngrok" and event.data != "ON":
         logger.info("stopping ngrok...")
         NgrokController.stop()
