@@ -48,6 +48,7 @@ def listener(event):
         NgrokController.stop()
         CamController.stop()
         ref.update({'ngrok_url': None})
+        ref.update({'err': None})
     else:
         pass
 
