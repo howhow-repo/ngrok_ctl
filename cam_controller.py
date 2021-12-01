@@ -10,19 +10,19 @@ logger = logging.getLogger(__name__)
 class CamController:
     process = None
 
-    @classmethod
-    def start(cls):
-        if cls.process is None:
-            cls.process = subprocess.Popen(args=['sudo', 'motion'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    @staticmethod
+    def start():
+        if CamController.process is None:
+            CamController.process = subprocess.Popen(args=['sudo', 'motion'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
             logger.info("cam service started")
         else:
-            logger.info(f"cam has started at pid {cls.process.pid}, do nothing.")
+            logger.info(f"cam has started at pid {CamController.process.pid}, do nothing.")
 
-    @classmethod
-    def stop(cls):
-        if cls.process is not None:
-            os.system(f"sudo pkill -9 -P {cls.process.pid}")
+    @staticmethod
+    def stop():
+        if CamController.process is not None:
+            os.system(f"sudo pkill -9 -P {CamController.process.pid}")
             logger.info("cam service stopped")
-            cls.process = None
+            CamController.process = None
         else:
             logger.info(f"cam service is already stop, do nothing.")
