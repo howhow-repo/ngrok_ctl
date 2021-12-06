@@ -1,5 +1,7 @@
 import os
 import random
+import time
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -29,3 +31,9 @@ class ApprtcController:
         if cls.browser is not None:
             cls.browser.quit()
             cls.room_id = None
+
+
+if __name__ == '__main__':
+    ApprtcController.start()
+    time.sleep(10)
+    ApprtcController.stop()
