@@ -74,7 +74,7 @@ def init_data_on_firebase(mac):
         'last_reboot': str(datetime.now()),
         'last_heartbeat': str(datetime.now()),
         'ngrok_url': None,
-        'expose_ports': NgrokController.expose_ports
+        'expose_ports': NgrokController.expose_ports,
         'apprtc': 'OFF'
     }})
 
