@@ -48,8 +48,8 @@ def listener(event):
         ref.update({'ngrok_url': None})
         ref.update({'err': None})
 
-    elif event.path == "/apprtc" and event.data != "ON":
-        logger.info("stopping apprtc...")
+    elif event.path == "/apprtc" and event.data == "ON":
+        logger.info("starting apprtc...")
         try:
             room_id = ApprtcController.start()
             ref.update({'apprtc_room_id': room_id})
