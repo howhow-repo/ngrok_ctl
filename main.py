@@ -10,6 +10,7 @@ from firebase_admin import db
 from getmac import get_mac_address
 from pyngrok import conf
 
+from apprtc_controller import ApprtcController
 from heartbeat import Heartbeat
 from ngrok_controller import NgrokController
 
@@ -38,12 +39,28 @@ def listener(event):
             ref.update({'ngrok_url': NgrokController.public_urls})
             ref.update({'err': None})
         except:
-            ref.update({'err': "something went wrong"})
+            ref.update({'err': "something went wrong while starting ngrok."})
             NgrokController.stop()
+
     elif event.path == "/ngrok" and event.data != "ON":
         logger.info("stopping ngrok...")
         NgrokController.stop()
         ref.update({'ngrok_url': None})
+        ref.update({'err': None})
+
+    elif event.path == "/apprtc" and event.data != "ON":
+        logger.info("stopping apprtc...")
+        try:
+            room_id = ApprtcController.start()
+            ref.update({'apprtc_room_id': room_id})
+        except:
+            ref.update({'err': "something went wrong while starting apprtc."})
+            ApprtcController.stop()
+
+    elif event.path == "/apprtc" and event.data != "ON":
+        logger.info("stopping apprtc...")
+        ApprtcController.stop()
+        ref.update({'apprtc_room_id': None})
         ref.update({'err': None})
     else:
         pass
@@ -58,6 +75,7 @@ def init_data_on_firebase(mac):
         'last_heartbeat': str(datetime.now()),
         'ngrok_url': None,
         'expose_ports': NgrokController.expose_ports
+        'apprtc': 'OFF'
     }})
 
 
