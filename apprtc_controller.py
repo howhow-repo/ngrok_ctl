@@ -29,6 +29,8 @@ class ApprtcController:
     @classmethod
     def stop(cls):
         if cls.browser is not None:
+            hangup_button = cls.browser.find_element(By.ID, 'hangup')
+            hangup_button.click()
             cls.browser.quit()
             cls.room_id = None
 
