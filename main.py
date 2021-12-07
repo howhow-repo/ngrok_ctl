@@ -38,8 +38,9 @@ def listener(event):
             NgrokController.start()
             ref.update({'ngrok_url': NgrokController.public_urls})
             ref.update({'err': None})
-        except:
+        except Exception as e:
             ref.update({'err': "something went wrong while starting ngrok."})
+            logger.error(e)
             NgrokController.stop()
 
     elif event.path == "/ngrok" and event.data != "ON":
@@ -53,8 +54,9 @@ def listener(event):
         try:
             room_id = ApprtcController.start()
             ref.update({'apprtc_room_id': room_id})
-        except:
+        except Exception as e:
             ref.update({'err': "something went wrong while starting apprtc."})
+            logger.error(e)
             ApprtcController.stop()
 
     elif event.path == "/apprtc" and event.data != "ON":
