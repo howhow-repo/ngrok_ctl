@@ -16,9 +16,10 @@ class ApprtcController:
     def start(cls):
         if cls.browser is None:
             chrome_options = Options()
-            chrome_options.add_argument('--headless')
+            chrome_options.add_argument('--headless')  # 無視窗
             chrome_options.add_argument('use-fake-ui-for-media-stream')
-
+            chrome_options.add_argument('--incognito')  # 無痕
+            chrome_options.add_argument('--no-sandbox')  # 解決DevToolsActivePort檔案不存在的報錯
             cls.room_id = str(random.randint(100000000, 999999999))
             cls.browser = webdriver.Chrome(service=cls.chromedriver, options=chrome_options)
             cls.browser.get(f'https://appr.tc/r/{cls.room_id}')

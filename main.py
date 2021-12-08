@@ -27,7 +27,7 @@ def main():
     ref.listen(listener)
     Heartbeat_looping = threading.Thread(target=Heartbeat.start(ETH_MAC))
     Heartbeat_looping.start()
-    print("heartbeat start")
+    logger.info("heartbeat start")
 
 
 def listener(event):
@@ -54,6 +54,7 @@ def listener(event):
         try:
             room_id = ApprtcController.start()
             ref.update({'apprtc_room_id': room_id})
+            logger.info(f'apprtc started at room {room_id}')
         except Exception as e:
             ref.update({'err': "something went wrong while starting apprtc."})
             logger.error(e)
