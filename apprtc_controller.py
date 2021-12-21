@@ -1,4 +1,4 @@
-import time
+import logging
 import random
 from decouple import config
 from selenium import webdriver
@@ -6,6 +6,8 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
+
+logger = logging.getLogger(__name__)
 
 class ApprtcController:
     browser = None
@@ -22,9 +24,14 @@ class ApprtcController:
             chrome_options.add_argument('--no-sandbox')  # 解決DevToolsActivePort檔案不存在的報錯
             cls.room_id = str(random.randint(100000000, 999999999))
             cls.browser = webdriver.Chrome(service=cls.chromedriver, options=chrome_options)
-            cls.browser.get(f'https://appr.tc/r/{cls.room_id}')
-            join_button = cls.browser.find_element(By.ID, 'confirm-join-button')
-            join_button.click()
+            try:
+                cls.browser.get(f'https://talk.io/{cls.room_id}')
+                # join_button = cls.browser.find_element(By.ID, 'confirm-join-button')
+                # join_button.click()
+            except Exception as e:
+                logger.error(e)
+                cls.stop()
+                return False
 
         return cls.room_id
 
