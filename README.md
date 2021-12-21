@@ -90,5 +90,12 @@ If you are not sure how to use system daemon in pi, please check [this](https://
 ----
 
 ## Introduction:
-Using chromedriver 
 
+
+## Installation:
+
+### 1. Update your chromium
+`sudo apt install chromium-browser -y`
+
+### 2. Download chromedriver
+`sudo apt-get install chromium-chromedriver -y`
