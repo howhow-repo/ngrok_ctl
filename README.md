@@ -91,7 +91,7 @@ If you are not sure how to use system daemon in pi, please check [this](https://
 
 ## Introduction:
 利用 selenium 操作 chromedriver，使pi能夠自動登入talky.io、開啟chatroom使得使用者能夠透過其他方式登入talky.io來觀看pi的webcam。
-
+![Demo](demo/apprtc_demo.gif)
 ## Installation:
 
 ### 1. Update your chromium
