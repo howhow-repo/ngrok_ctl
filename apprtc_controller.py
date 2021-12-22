@@ -32,7 +32,7 @@ class ApprtcController:
 
             try:
                 cls.browser.get(f'https://talky.io/{cls.room_id}')
-                time.sleep(10)
+                time.sleep(5)
                 ele_select = cls.browser.find_element(By.XPATH,
                                                       "/html/body/div[@id='root']"
                                                       "/div[1]/div[1]/div[1]/div[2]/div[3]/div[2]/label/select")
