@@ -74,9 +74,8 @@ After=network-online.target
 Type=simple
 User=pi
 Restart=on-failure
-StartLimitIntervalSec=10
 RestartSec=30s
-ExecStart=/usr/bin/python3 /home/pi/Documents/projects/ngrok_test/main.py
+ExecStart=bash /usr/src/ngrok_ctl/starter.sh
 
 [Install]
 WantedBy=multi-user.target
