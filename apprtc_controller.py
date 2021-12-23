@@ -42,11 +42,17 @@ class ApprtcController:
                 selects = Select(ele_select)
                 selects.select_by_index(0)
 
-                join_button = WebDriverWait(cls.browser, 100).until(
-                    EC.presence_of_element_located((By.XPATH,
-                                                    "/html/body/div[@id='root']"
-                                                    "/div[1]/div[1]/div[1]/div[2]/div[3]/div[4]/button")))
-                join_button.click()
+                for i in range(10):
+                    join_button = WebDriverWait(cls.browser, 100).until(
+                        EC.presence_of_element_located((By.XPATH,
+                                                        "/html/body/div[@id='root']"
+                                                        "/div[1]/div[1]/div[1]/div[2]/div[3]/div[4]/button")))
+                    if join_button.text == 'Join Call':
+                        join_button.click()
+                        break
+                    else:
+                        time.sleep(0.5)
+                        pass
 
             except Exception as e:
                 logger.error(e)
