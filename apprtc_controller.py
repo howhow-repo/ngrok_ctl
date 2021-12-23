@@ -7,6 +7,8 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 logger = logging.getLogger(__name__)
 
@@ -32,19 +34,18 @@ class ApprtcController:
 
             try:
                 cls.browser.get(f'https://talky.io/{cls.room_id}')
-                time.sleep(4)
-                ele_select = cls.browser.find_element(By.XPATH,
-                                                      "/html/body/div[@id='root']"
-                                                      "/div[1]/div[1]/div[1]/div[2]/div[3]/div[2]/label/select")
+                ele_select = WebDriverWait(cls.browser, 100).until(
+                    EC.presence_of_element_located((By.XPATH,
+                                                    "/html/body/div[@id='root']"
+                                                    "/div[1]/div[1]/div[1]/div[2]/div[3]/div[2]/label/select")))
 
                 selects = Select(ele_select)
                 selects.select_by_index(0)
 
-                time.sleep(2)
-
-                join_button = cls.browser.find_element(By.XPATH,
-                                                       "/html/body/div[@id='root']"
-                                                       "/div[1]/div[1]/div[1]/div[2]/div[3]/div[4]/button")
+                join_button = WebDriverWait(cls.browser, 100).until(
+                    EC.presence_of_element_located((By.XPATH,
+                                                    "/html/body/div[@id='root']"
+                                                    "/div[1]/div[1]/div[1]/div[2]/div[3]/div[4]/button")))
                 join_button.click()
 
             except Exception as e:
