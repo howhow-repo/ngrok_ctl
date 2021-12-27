@@ -22,7 +22,7 @@ class ApprtcController:
     def start(cls):
         if cls.browser is None:
             chrome_options = Options()
-            # chrome_options.add_argument('--headless')  # 無視窗
+            chrome_options.add_argument('--headless')  # 無視窗
             chrome_options.add_argument('--disable-blink-features=AutomationControlled')
             chrome_options.add_argument('--use-fake-ui-for-media-stream')
             # chrome_options.add_argument('--incognito')  # 無痕

@@ -60,6 +60,10 @@ def listener(event):
             logger.error(e)
             ApprtcController.stop()
 
+    elif event.path == "/apprtc" and event.data == "RESTART":
+        logger.info(f'Restart system daemon')
+        os.system("sudo systemctl restart ngrok_ctl.service")
+
     elif event.path == "/apprtc" and event.data != "ON":
         logger.info("stopping apprtc...")
         ApprtcController.stop()
