@@ -22,7 +22,7 @@ class ApprtcController:
     def start(cls):
         if cls.browser is None:
             chrome_options = Options()
-            chrome_options.add_argument('--headless')  # 無視窗
+            # chrome_options.add_argument('--headless')  # 無視窗
             chrome_options.add_argument('--disable-blink-features=AutomationControlled')
             chrome_options.add_argument('--use-fake-ui-for-media-stream')
             # chrome_options.add_argument('--incognito')  # 無痕
@@ -33,26 +33,26 @@ class ApprtcController:
             cls.browser = webdriver.Chrome(service=cls.chromedriver, options=chrome_options)
 
             try:
-                cls.browser.get(f'https://talky.io/{cls.room_id}')
-                ele_select = WebDriverWait(cls.browser, 100).until(
-                    EC.presence_of_element_located((By.XPATH,
-                                                    "/html/body/div[@id='root']"
-                                                    "/div[1]/div[1]/div[1]/div[2]/div[3]/div[2]/label/select")))
-
-                selects = Select(ele_select)
-                selects.select_by_index(0)
-
-                for i in range(10):
-                    join_button = WebDriverWait(cls.browser, 100).until(
-                        EC.presence_of_element_located((By.XPATH,
-                                                        "/html/body/div[@id='root']"
-                                                        "/div[1]/div[1]/div[1]/div[2]/div[3]/div[4]/button")))
-                    if join_button.text == 'Join Call':
-                        join_button.click()
-                        break
-                    else:
-                        time.sleep(0.5)
-                        pass
+                cls.browser.get(f'https://rtc.api.zhlh.sinopec.com/r/{cls.room_id}')
+                # ele_select = WebDriverWait(cls.browser, 100).until(
+                #     EC.presence_of_element_located((By.XPATH,
+                #                                     "/html/body/div[@id='root']"
+                #                                     "/div[1]/div[1]/div[1]/div[2]/div[3]/div[2]/label/select")))
+                #
+                # selects = Select(ele_select)
+                # selects.select_by_index(0)
+                #
+                # for i in range(10):
+                #     join_button = WebDriverWait(cls.browser, 100).until(
+                #         EC.presence_of_element_located((By.XPATH,
+                #                                         "/html/body/div[@id='root']"
+                #                                         "/div[1]/div[1]/div[1]/div[2]/div[3]/div[4]/button")))
+                #     if join_button.text == 'Join Call':
+                #         join_button.click()
+                #         break
+                #     else:
+                #         time.sleep(0.5)
+                #         pass
 
             except Exception as e:
                 logger.error(e)

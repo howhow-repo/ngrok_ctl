@@ -53,8 +53,8 @@ def listener(event):
         logger.info("starting apprtc...")
         try:
             room_id = ApprtcController.start()
-            ref.update({'apprtc_room_id': f'https://talky.io/{room_id}'})
-            logger.info(f'apprtc started at room {room_id}')
+            ref.update({'apprtc_room_id': f'https://rtc.api.zhlh.sinopec.com/r/{room_id}'})
+            logger.info(f'apprtc started at https://rtc.api.zhlh.sinopec.com/r/{room_id}')
         except Exception as e:
             ref.update({'err': "something went wrong while starting apprtc."})
             logger.error(e)
