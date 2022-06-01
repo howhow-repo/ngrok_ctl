@@ -9,6 +9,7 @@ from decouple import config
 from firebase_admin import db
 from getmac import get_mac_address
 from pyngrok import conf
+from pyngrok import ngrok
 
 from heartbeat import Heartbeat
 from ngrok_controller import NgrokController
@@ -76,7 +77,7 @@ def envisset() -> bool:
     elif not config('NGROK_TOKEN', default=None):
         logger.error("Please setup NGROK_TOKEN for ngrok in .env")
         return False
-    os.system(f'ngrok authtoken {config("NGROK_TOKEN", default=None)}')
+    ngrok.set_auth_token(f'{config("NGROK_TOKEN", default=None)}')
 
     try:
         base_dir = os.path.dirname(os.path.realpath(__file__))
