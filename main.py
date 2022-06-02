@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 def main():
+    ngrok.set_auth_token(f'{config("NGROK_TOKEN", default=None)}')
     logger.info("starting ngrok daemon... "+ETH_MAC+" / "+LOCAL_IP)
     conf.get_default().region = 'au'
     init_data_on_firebase(ETH_MAC)
@@ -38,8 +39,8 @@ def listener(event):
             NgrokController.start()
             ref.update({'ngrok_url': NgrokController.public_urls})
             ref.update({'err': None})
-        except:
-            ref.update({'err': "something went wrong"})
+        except Exception as e:
+            ref.update({'err': f"something went wrong: {e}"})
             NgrokController.stop()
     elif event.path == "/ngrok" and event.data != "ON":
         logger.info("stopping ngrok...")
@@ -77,7 +78,6 @@ def envisset() -> bool:
     elif not config('NGROK_TOKEN', default=None):
         logger.error("Please setup NGROK_TOKEN for ngrok in .env")
         return False
-    ngrok.set_auth_token(f'{config("NGROK_TOKEN", default=None)}')
 
     try:
         base_dir = os.path.dirname(os.path.realpath(__file__))
